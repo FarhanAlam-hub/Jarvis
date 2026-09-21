@@ -2,6 +2,8 @@ import speech_recognition as sr
 import webbrowser
 import pyttsx3
 import musiclibrary
+import os
+from openai import OpenAI
 
 # Register Brave browser
 brave_path = r"C:\Users\farha\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe"
@@ -11,8 +13,25 @@ recognizer = sr.Recognizer()
 
 def speak(text):
     engine = pyttsx3.init()  # init once, globally
+    engine.setProperty('rate', 150)      # speech speed (default ~200)
+    engine.setProperty('volume', 1.0)    # 0.0 to 1.0
     engine.say(text)
     engine.runAndWait()
+
+def aiProcess(command):
+    client = OpenAI(
+    api_key=os.environ.get("GROQ_API_KEY"),
+    base_url="https://api.groq.com/openai/v1"
+    )
+
+    completion = client.chat.completions.create(
+    model="openai/gpt-oss-20b",
+    messages=[
+        {"role": "system", "content": "You are a virtual assistant named Jarvis, skilled in general tasks like Alexa and Google Assistant in brief."},
+        {"role": "user", "content": command}
+    ]
+    )
+    return completion.choices[0].message.content
 
 def processCommand(c):
     c = c.lower()
@@ -48,7 +67,9 @@ def processCommand(c):
         webbrowser.get('brave').open(link)
 
     else:
-        speak("Sorry, I didn't understand that command")
+        # Let OpenAI handles the request
+        output = aiProcess(c)
+        speak(output)
 
 if __name__ == "__main__":
     speak("Initializing Jarvis....")
