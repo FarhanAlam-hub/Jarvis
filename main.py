@@ -25,6 +25,10 @@ def processCommand(c):
         speak("Opening youtube")
         webbrowser.get('brave').open("https://youtube.com")
 
+    elif "open chess" in c:
+        speak("Opening chess")
+        webbrowser.get('brave').open("https://www.chess.com/home")
+
     elif "open erp" in c:
         speak("Opening your ERP")
         webbrowser.get('brave').open("http://globalinstitutes.in/")
