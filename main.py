@@ -13,7 +13,7 @@ recognizer = sr.Recognizer()
 
 def speak(text):
     engine = pyttsx3.init()  # init once, globally
-    engine.setProperty('rate', 150)      # speech speed (default ~200)
+    engine.setProperty('rate', 130)      # speech speed (default ~200)
     engine.setProperty('volume', 1.0)    # 0.0 to 1.0
     engine.say(text)
     engine.runAndWait()
@@ -50,7 +50,7 @@ def processCommand(c):
 
     elif "open erp" in c:
         speak("Opening your ERP")
-        webbrowser.get('brave').open("http://globalinstitutes.in/")
+        webbrowser.open("http://globalinstitutes.in/")
 
     elif "open github" in c:
         speak("Opening github")
